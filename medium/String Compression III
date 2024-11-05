@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string compressedString(string word) {
+        string comp="";
+        word+='A';
+        int n=word.size();
+        char c=word[0];
+        int cnt=1;
+        for(int i=1;i<n;i++)
+        {
+            
+            if(word[i]==c)
+            {
+                cnt++;
+                if(cnt>9)
+                {
+                    comp+=to_string(9)+c;
+                    cnt=1;
+                    c=word[i];
+                }
+            }
+
+            else
+            {
+
+                if(cnt<=9)
+                {
+                    comp+=to_string(cnt)+c;
+                }
+                cnt=1;
+                c=word[i];
+
+            }
+
+            
+
+
+
+
+        }
+
+        return comp;
+    }
+};
