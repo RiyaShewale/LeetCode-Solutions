@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int smallestNumber(int n, int t) {
+    
+            
+       
+
+
+        for(int i=n;i>0;i++)
+            {
+                int ncopy=i;
+                int pro=1;
+                 while(ncopy)
+                {
+                int k=ncopy%10;
+                pro=pro*k;
+                if(k%t==0)
+                {
+                    return i;
+                }
+
+                ncopy=ncopy/10;
+                }
+
+            if((pro%t)==0)
+            {
+                return i;
+            }
+                
+            }
+       
+            return 0;
+       
+        
+    }
+};
