@@ -1,0 +1,48 @@
+class Solution {
+public:
+    void solve(string s,int o,int c,vector<string> &ans,int n)
+    {
+        if(o==n && c==n)
+        {
+            ans.push_back(s);
+            return;
+        }
+       
+
+        if(o<n)
+        {
+            s+='(';
+            o++;
+            solve(s,o,c,ans,n);
+            o--;
+            s.pop_back();
+
+        }
+
+        if(c<n)
+        {
+            
+            if(o-(c+1)>=0)
+            {
+                s+=')';
+                c++;
+                solve(s,o,c,ans,n);
+                c--;
+                s.pop_back();
+            }
+            
+            
+        }
+
+    
+
+    }
+    vector<string> generateParenthesis(int n) {
+        int o=0;
+        int c=0;
+        vector<string> ans;
+
+        solve("",o,c,ans,n);
+        return ans;
+    }
+};
