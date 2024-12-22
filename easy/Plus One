@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int n=digits.size();
+
+        for(int i=n-1;i>=0;i--)
+        {
+            if(digits[i]+1>9)
+            {
+                digits[i]=0;
+                continue;
+            }
+
+            else
+            {
+                digits[i]++;
+                break;
+            }
+        }
+
+        if(digits[0]==0)
+        {
+            vector<int>copy(n+1);
+
+            copy[0]=1;
+            for(int i=2;i<=n;i++)
+            {
+                copy[i]=digits[i-1];
+            }
+
+            return copy;
+        }
+
+        return digits;
+
+
+    }
+};
