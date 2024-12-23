@@ -1,0 +1,37 @@
+class Solution {
+public:
+
+string solve(string s,int n)
+{
+
+    if(n==1)
+    {
+        return s;
+    }
+    int cnt=1;
+    string ans="";
+    for(int i=1;i<s.length();i++)
+    {
+        if(s[i]==s[i-1])
+        {
+            cnt++;
+        }
+
+        else
+        {
+            ans+=to_string(cnt)+s[i-1];
+            cnt=1;
+
+        }
+    }
+
+    ans+=to_string(cnt)+s[s.length()-1];
+
+    return solve(ans,--n);
+}
+    string countAndSay(int n) {
+        
+    return solve("1",n);
+        
+    }
+};
