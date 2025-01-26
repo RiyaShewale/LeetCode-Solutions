@@ -1,0 +1,86 @@
+class Solution {
+public:
+    vector<int> countMentions(int numberOfUsers, vector<vector<string>>& events) {
+        // Step 1: Sort events by timestamp, with "OFFLINE" before "MESSAGE" for same timestamp
+        sort(events.begin(), events.end(), [](const vector<string>& a, const vector<string>& b) {
+            int timestampA = stoi(a[1]);
+            int timestampB = stoi(b[1]);
+
+            // Sort by timestamp first
+            if (timestampA != timestampB) {
+                return timestampA < timestampB;
+            }
+
+            // Sort by event type: "OFFLINE" (higher priority) before "MESSAGE"
+            if (a[0] == "OFFLINE" && b[0] == "MESSAGE") {
+                return true;
+            }
+            if (a[0] == "MESSAGE" && b[0] == "OFFLINE") {
+                return false;
+            }
+
+            return false; // No change if both are the same type
+        });
+
+        // Step 2: Initialize mentions and track online users
+        vector<int> mentions(numberOfUsers, 0);
+        unordered_set<int> online_users;
+        for (int i = 0; i < numberOfUsers; i++) {
+            online_users.insert(i); // All users are initially online
+        }
+
+        // Step 3: Priority queue to manage offline expiration
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> offline_expirations;
+
+        // Step 4: Process events in chronological order
+        for (auto& event : events) {
+            string eventType = event[0];
+            int timestamp = stoi(event[1]);
+
+            // Process offline expirations
+            while (!offline_expirations.empty() && offline_expirations.top().first <= timestamp) {
+                int userId = offline_expirations.top().second;
+                offline_expirations.pop();
+                online_users.insert(userId); // Bring user back online
+            }
+
+            if (eventType == "MESSAGE") {
+                string mentions_string = event[2];
+
+                // Handle ALL mentions
+                if (mentions_string == "ALL") {
+                    for (int user = 0; user < numberOfUsers; user++) {
+                        mentions[user]++;
+                    }
+                }
+                // Handle HERE mentions
+                else if (mentions_string == "HERE") {
+                    for (int user : online_users) {
+                        mentions[user]++;
+                    }
+                }
+                // Handle specific id mentions
+                else {
+                    stringstream ss(mentions_string);
+                    string token;
+                    while (ss >> token) {
+                        if (token.substr(0, 2) == "id") {
+                            int userId = stoi(token.substr(2));
+                            if (userId >= 0 && userId < numberOfUsers) {
+                                mentions[userId]++;
+                            }
+                        }
+                    }
+                }
+            } else if (eventType == "OFFLINE") {
+                int userId = stoi(event[2]);
+                if (online_users.find(userId) != online_users.end()) {
+                    online_users.erase(userId); // Set user offline
+                    offline_expirations.push({timestamp + 60, userId});
+                }
+            }
+        }
+
+        return mentions;
+    }
+};
