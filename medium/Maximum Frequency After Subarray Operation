@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maxFrequency(vector<int>& nums, int k) {
+        int ans=0;int n=nums.size();
+        int cnt = count(nums.begin(), nums.end(),k);
+        for(int i=0;i<=50;i++)
+        {
+            if(i==k) continue;
+            int sum=0;
+            int maxsum=INT_MIN;
+            
+            for(int j=0;j<n;j++)
+            {
+                if(nums[j]==i) sum++;
+                else if(nums[j]==k) sum--;
+                
+                if(sum<=0)sum=0;
+                maxsum=max(maxsum,sum);
+            }
+
+            ans=max(ans,maxsum);
+        }
+
+        return ans+cnt;
+    }
+};
