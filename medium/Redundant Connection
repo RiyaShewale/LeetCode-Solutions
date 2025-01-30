@@ -1,0 +1,37 @@
+class Solution {
+public:
+bool isConnected(int s, int t, vector<int> vis, vector<vector<int>>&adj)
+{
+    vis[s]=1;
+    if(s== t)return true;
+    bool isFound=false;
+
+    for(auto node:adj[s])
+    {
+        if(!vis[node])
+        {
+            vis[node]=1;
+            isFound= isFound||isConnected(node, t,vis,adj);
+            vis[node]=0;
+        }
+    }
+    return isFound;
+}
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+        vector<vector<int>> adj(n);
+        for(auto x:edges)
+        {
+            vector<int> vis(n,0);
+
+            if(isConnected(x[0]-1,x[1]-1,vis,adj)){
+                return x;
+            }
+
+            adj[x[0]-1].push_back(x[1]-1);
+            adj[x[1]-1].push_back(x[0]-1);
+        }
+
+        return {};
+    }
+};
