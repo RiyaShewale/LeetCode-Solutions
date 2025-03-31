@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long putMarbles(vector<int>& weights, int k) {
+        int n=weights.size();
+
+        int i=0;
+
+
+        vector<long long> sums;
+
+
+        while(i<n-1)
+        {
+            sums.push_back(weights[i]+weights[i+1]);
+            i++;
+        }
+        sort(sums.begin(),sums.end());
+
+       long long minans=weights[0]+weights[n-1];
+        long long maxans=weights[0]+weights[n-1];
+
+        for(int i=0;i<k-1;i++)
+        {
+            minans+=sums[i];
+            maxans+=sums[n-2-i];
+        }
+
+        return maxans-minans;
+
+
+    }
+};
