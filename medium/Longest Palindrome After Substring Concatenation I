@@ -1,0 +1,42 @@
+class Solution {
+public:
+
+        bool isPalindrome(const string &str) {
+    int left = 0, right = str.size() - 1;
+    while (left < right) {
+        if (str[left] != str[right])
+            return false;
+        left++;
+        right--;
+    }
+    return true;
+}
+
+
+int longestPalindrome(string s, string t) {
+    int maxLength = 0;
+    int n = s.size(), m = t.size();
+
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = i; j <= n; j++) {
+            string sub_s = s.substr(i, j - i);
+
+            
+            for (int x =0; x <m; x++) {
+                for (int y= x; y<=m;y++) {
+                    string sub_t= t.substr(x, y - x);
+                    string combined= sub_s + sub_t; // Concatenate s and t substrings
+
+                    if (isPalindrome(combined)) {
+                        maxLength = max(maxLength, (int)combined.size());
+                    }
+                }
+            }
+        }
+    }
+
+    return maxLength;
+}
+    
+};
