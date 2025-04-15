@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int n=nums.size();
+        int sum=0;
+        for(auto x: nums) sum+=x;
+
+        vector<vector<int>>dp(n, vector<int>(sum+1));
+        dp[0][nums[0]]=1;
+        if(nums[0]==0) dp[0][0]=2;
+        else dp[0][0]=1;
+        
+
+
+        
+
+        for(int idx=1;idx<n;idx++)
+        {
+            for(int j=0;j<=sum;j++)
+            {
+                int nottake=dp[idx-1][j];
+                int take=0;
+                if(nums[idx]<=j)
+                {
+                    take=dp[idx-1][j-nums[idx]];
+                }
+                dp[idx][j]=take+nottake;
+            }
+
+        }
+
+        int cnt=0;
+        for(int i=0;i<=sum/2;i++)
+        {
+            if(dp[n-1][i]!=0)
+            {
+                int num1=i;
+                int num2=sum-i;
+
+                if(num1-num2==target || num2-num1==target)
+                {
+                    cnt+=dp[n-1][i];
+                }
+            }
+        }
+
+        return cnt;
+    }
+};
