@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int numberOfArrays(vector<int>& diff, int lower, int upper) {
+        int n=diff.size();
+        vector<long long> prefix(n);
+        prefix[0]=diff[0];
+        long long minele=prefix[0];
+        long long maxele=prefix[0];
+        for(int i=1;i<n;i++)
+        {
+            prefix[i]=diff[i]+prefix[i-1];
+            maxele=max(maxele,prefix[i]);
+            minele=min(minele, prefix[i]);
+        }
+
+        long long llimit=lower;
+        long long ulimit=upper;
+
+        if(minele<=0)
+        {
+            llimit=lower-minele;
+        }
+
+        if(maxele>=0)
+        {
+            ulimit=upper-maxele;
+        }
+
+        return (ulimit-llimit+1>0)? ulimit-llimit+1: 0;
+
+
+    }
+};
