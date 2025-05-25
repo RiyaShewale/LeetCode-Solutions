@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int longestPalindrome(vector<string>& words) {
+        unordered_map<string, int> mpp;
+        
+        for(auto x: words)
+        {
+            mpp[x]++;
+        }
+
+        bool same=false;
+        int len=0;
+        for(auto i: mpp)
+        {
+            if(i.first[0]==i.first[1])
+            {
+                if(mpp[i.first]%2!=0) 
+                {
+                    same=true;
+                    
+                }
+
+                len+=(mpp[i.first]/2)*4;
+                
+            }
+            
+            else 
+            {
+               string s = i.first;
+                int a = mpp[s];
+                reverse(s.begin(), s.end());
+
+               
+                if (mpp.find(s) != mpp.end()) 
+                {
+                    int b = mpp[s];
+                    int pair = 0;
+                    if (i.first < s)
+                     { 
+                        pair = min(a, b);
+                        len += pair * 4;
+                     }
+                }
+            }
+        }
+
+        return (same)? len+2: len;
+    }
+};
