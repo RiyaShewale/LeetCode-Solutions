@@ -1,0 +1,97 @@
+class Solution {
+public:
+void dfs(int node, int depth, int &cnt,vector<int> & vis, int k, vector<vector<int>> &adj)
+{
+if(depth<=k)
+{
+    cnt++;
+}
+    for(auto i:adj[node])
+    {
+        if(!vis[i])
+        {
+            vis[i]=1;
+            dfs(i, depth+1, cnt, vis, k, adj);
+        }
+    }
+
+    
+    return;
+}
+    vector<int> maxTargetNodes(vector<vector<int>>& edges1, vector<vector<int>>& edges2, int k) {
+int n = 0, m = 0;
+for (auto &e : edges1) {
+    n = max(n, max(e[0], e[1]));
+}
+for (auto &e : edges2) {
+    m = max(m, max(e[0], e[1]));
+}
+n += 1; // because nodes are 0-indexed
+m += 1;
+vector<vector<int>> adj1(n), adj2(m);
+
+
+        for(int i=0;i<edges1.size();i++)
+        {
+            int u=edges1[i][0];
+            int v=edges1[i][1];
+            adj1[u].push_back(v);
+            adj1[v].push_back(u);
+        }
+
+        for(int i=0;i<edges2.size();i++)
+        {
+            int u=edges2[i][0];
+            int v=edges2[i][1];
+            adj2[u].push_back(v);
+            adj2[v].push_back(u);
+        }
+
+
+        vector<int> targets1(n);
+        vector<int> targets2(m);
+
+        for(int i=0;i<n;i++)
+        {
+            int cnt=0;
+            vector<int> vis1(n, 0);
+            vis1[i]=1;
+            dfs(i, 0, cnt, vis1, k, adj1);
+            targets1[i]=cnt;
+        }
+        int maxi=INT_MIN;
+        for(int i=0;i<m;i++)
+        {
+            int cnt=0;
+            vector<int> vis2(m,0);
+            vis2[i]=1;
+            dfs(i, 0, cnt, vis2, k-1, adj2);
+            targets2[i]=cnt;
+            maxi=max(maxi, cnt);
+
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            cout<<targets1[i];
+        }
+        cout<<endl;
+
+        
+        for(int i=0;i<m;i++)
+        {
+            cout<<targets2[i];
+        }
+        
+        for(int i=0;i<n;i++)
+        {
+            targets1[i]+=maxi;
+        }
+
+        return targets1;
+
+
+
+
+    }
+};
