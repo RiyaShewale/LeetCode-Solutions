@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+ vector<int> even, odd;
+    int n = nums.size();
+    
+    for (int i = 0; i < n; ++i) {
+        if (nums[i] % 2 == 0) even.push_back(i);
+        else odd.push_back(i);
+    }
+    
+    int evenC= even.size(), oddC = odd.size();
+    
+    if (abs(evenC - oddC) > 1) return -1;
+    
+
+    auto cnt = [](const vector<int>& pos, int start) -> long long {
+        long long swaps = 0;
+        for (int i = 0; i < pos.size(); ++i) {
+            swaps += abs(pos[i] - (start + 2 * i));
+        }
+        return swaps;
+    };
+    
+    long long res = LLONG_MAX;
+    if (evenC>= oddC) {
+        res = min(res, cnt(even, 0)); // even starts first
+    }
+    if (oddC >= evenC) {
+        res = min(res, cnt(odd, 0)); // odd starts first
+    }
+    
+    return res;
+    }
+};
