@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int primeSubarray(vector<int>& nums, int k) {
+   // Sieve of Eratosthenes to precompute primes
+        const int MAX = 50001;
+        vector<bool> is_prime(MAX, true);
+        is_prime[0] = is_prime[1] = false;
+        for (int i = 2; i * i < MAX; ++i) {
+            if (is_prime[i]) {
+                for (int j = i * i; j < MAX; j += i)
+                    is_prime[j] = false;
+            }
+        }
+
+        int n = nums.size();
+        multiset<int> primes;
+        long long cnt = 0;
+        long long left = 0;
+        vector<long long> idx;
+        for(int right=0;right<n;right++)
+            {
+                if(is_prime[nums[right]])
+
+                {                
+                    idx.push_back(right);
+                    primes.insert(nums[right]);
+                }
+                
+                while(primes.size()>=2 &&  (*primes.rbegin() - *primes.begin()) > k)
+                {
+                   if (is_prime[nums[left]]) 
+                   {
+                    primes.erase(primes.find(nums[left]));
+                    }
+
+                    left++;
+                }
+                if(primes.size()>=2 && *primes.rbegin()-*primes.begin()<=k)
+                {
+                    // int temp=left;
+                    // int size=primes.size();
+                    // while(size>=2)
+                    // {
+                    //     cnt++;
+                    //     if(is_prime[nums[temp]])
+                    //     {
+                    //         size--;
+                    //     }
+                    //     temp++;
+                    // }
+                    int n=idx.size();
+                    if(idx.size()>=2)
+                    cnt+=(idx[n-2]-left+1);
+                }
+
+
+            }
+
+
+
+        return cnt;
+
+ 
+    }
+};
