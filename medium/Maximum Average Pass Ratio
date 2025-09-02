@@ -1,0 +1,35 @@
+class Solution {
+public:
+    double maxAverageRatio(vector<vector<int>>& classes, int extra) {
+        int n=classes.size();
+        priority_queue<pair<double, pair<double,double>>> ratios;
+        double sum=0.0;
+         for(auto i: classes)
+         {
+            double pass=static_cast<double>(i[0]);
+            double total=static_cast<double>(i[1]);
+            double ratio=pass/total;
+            double gain=(pass+1.0)/(total+1.0) - (pass/total);
+            ratios.push({gain,{pass,total}});
+            sum+=ratio;
+         }
+
+         while(extra)
+         {
+            auto max=ratios.top();
+            ratios.pop();
+            sum+=max.first;
+            
+            max.second.first++;
+            max.second.second++;
+            
+            max.first=(max.second.first+1)/(max.second.second+1) - (max.second.first/max.second.second);
+            ratios.push(max);
+            extra--;
+         }
+
+         return sum/n;
+
+
+    }
+};
