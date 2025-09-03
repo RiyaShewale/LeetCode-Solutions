@@ -1,0 +1,33 @@
+class Solution {
+public:
+bool solve(int idx, vector<int> &arr,vector<int> & dp)
+{
+    if(arr[idx]==0)
+    {
+        dp[idx]=1;
+        return true;
+    }
+
+    if(dp[idx]!=-1)return dp[idx];
+    dp[idx]=0;
+    bool forward=false;
+    bool back=0;
+    if(idx+arr[idx]<arr.size())
+    {
+        forward=solve(idx+arr[idx], arr,dp);
+    }
+
+    if(idx-arr[idx]>=0)
+    {
+        back=solve(idx-arr[idx],arr,dp);
+    }
+
+    return dp[idx]= forward || back;
+}
+    bool canReach(vector<int>& arr, int start) {
+        int n=arr.size();
+        vector<int> dp(n,-1);
+        return solve(start, arr,dp);
+
+    }
+};
