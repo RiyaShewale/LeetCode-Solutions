@@ -1,0 +1,50 @@
+class Solution {
+public:
+   
+vector<int>  sieve()
+{
+     long long n=100000;
+    vector<int> v(n+1,1);
+    v[0]=v[1]=0;
+    for(int i=2;i*i<=n;i++)
+    {
+        if(v[i])
+        {
+            for(int j=i*i;j<=n;j+=i)
+            {
+                v[j]=0;
+            }
+        }
+
+    }
+    return v;
+}
+
+
+
+
+
+
+    int sumFourDivisors(vector<int>& nums) {
+        int n=nums.size();
+        int ans=0;
+        vector<int> v=sieve();
+        for(int i=0;i<n;i++)
+        {
+            for(int j=1;j<sqrt(nums[i]);j++)
+            {
+                if((nums[i]%j)==0 && v[j]==1)
+                {
+                    if(v[nums[i]/j]==1 || nums[i]/j==j*j)
+                    ans=ans+j+(nums[i]/j)+1+nums[i];
+
+                    
+                }
+            }
+        }
+
+
+        return ans;
+        
+    }
+};
