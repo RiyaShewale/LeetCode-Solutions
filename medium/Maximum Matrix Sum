@@ -1,0 +1,23 @@
+class Solution {
+public:
+    long long maxMatrixSum(vector<vector<int>>& mat) {
+        long long n=mat.size();
+        long long m=mat[0].size();
+        long long cnt=0;
+        int minele=INT_MAX;
+        long long sum=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+
+            {
+                if(mat[i][j]<0)cnt++;
+                minele=min(minele,abs(mat[i][j]));
+                sum+=abs(mat[i][j]);
+            }
+        }
+
+        if(cnt%2==0)return sum;
+        else return sum-2*minele;
+    }
+};
