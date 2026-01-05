@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int n=nums.size();
+        int idx=n-1;
+        for(int i=1;i<n;i++)
+        {
+            if(nums[i]<nums[i-1]) idx=i-1;
+        }
+
+        
+
+        int low=0;
+        int high=idx;
+
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(nums[mid]==target)return true;
+            if(nums[mid]<target)low=mid+1;
+            else high=mid-1;
+        }
+
+         low=idx+1;
+        high=n-1;
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            if(nums[mid]==target)return true;
+            if(nums[mid]<target)low=mid+1;
+            else high=mid-1;
+        }
+
+        return false;
+    }
+};
